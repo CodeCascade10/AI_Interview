@@ -1,38 +1,68 @@
-import React from 'react'
+import React, { useState } from "react"
 import "../auth.form.scss"
 import { Link } from "react-router-dom"
+import { useAuth } from "../hooks/useAuth"
+import { useNavigate } from "react-router-dom"
 
 const Login = () => {
 
-   const handleSubmit =(e)=>{
+  const { loading, handleLogin } = useAuth()
+  const navigate=useNavigate()
+
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
-   }
+    handleLogin({ email, password })
+    navigate('/')
+  }
+
+  if (loading) {
+    return (
+      <main>
+        <h1>Loading...</h1>
+      </main>
+    )
+  }
 
   return (
-   <main>
-    <div className="form-container">
-      <h1>Login</h1>
+    <main>
+      <div className="form-container">
+        <h1>Login</h1>
 
-      <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
+          <div className="input-group">
+            <label htmlFor="email">Email</label>
+            <input
+              onChange={(e) => setEmail(e.target.value)}
+              type="email"
+              id="email"
+              placeholder="Enter email-address"
+            />
+          </div>
 
-      <div className="input-group">
-        <label htmlFor="email">Email</label>
-        <input type="email" id="email" placeholder='Enter email-address' />
-      </div>
-      <div className="input-group">
-        <label htmlFor="password">Password</label>
-        <input type="password" id="password" placeholder='Enter your Password here' />
-      </div>
-      
-      <button className='button primary-button'>Login</button>
+          <div className="input-group">
+            <label htmlFor="password">Password</label>
+            <input
+              onChange={(e) => setPassword(e.target.value)}
+              type="password"
+              id="password"
+              placeholder="Enter your Password here"
+            />
+          </div>
 
-      </form>
-       <p>
+          <button className="button primary-button">
+            Login
+          </button>
+        </form>
+
+        <p>
           Don't have an account? 
-          <a href="/register">Register here</a>
+          <Link to="/register">Register here</Link>
         </p>
-    </div>
-   </main>
+      </div>
+    </main>
   )
 }
 
