@@ -1,79 +1,79 @@
-const resume = `
-NAME
-Kausik Naskar
+// const resume = `
+// NAME
+// Kausik Naskar
 
-CONTACT
-Phone: +91-9876543210
-Email: kausik@example.com
-Location: Kankinara, West Bengal, India
+// CONTACT
+// Phone: +91-9876543210
+// Email: kausik@example.com
+// Location: Kankinara, West Bengal, India
 
-SUMMARY
-MERN stack developer focused on backend development using Node.js and MongoDB.
-Experienced in building REST APIs, authentication systems using JWT, and optimizing
-database queries. Interested in scalable system design and AI integrations.
+// SUMMARY
+// MERN stack developer focused on backend development using Node.js and MongoDB.
+// Experienced in building REST APIs, authentication systems using JWT, and optimizing
+// database queries. Interested in scalable system design and AI integrations.
 
-PROJECTS
+// PROJECTS
 
-AI Resume Builder
-- Built an AI-powered resume tailoring system using Node.js and Gemini API.
-- Implemented PDF generation using Puppeteer.
-- Stored structured resume data in MongoDB.
+// AI Resume Builder
+// - Built an AI-powered resume tailoring system using Node.js and Gemini API.
+// - Implemented PDF generation using Puppeteer.
+// - Stored structured resume data in MongoDB.
 
-Real-time Chat Application
-- Built using Socket.io and Node.js.
-- Implemented private messaging and group chat features.
-- Designed scalable event-driven backend architecture.
+// Real-time Chat Application
+// - Built using Socket.io and Node.js.
+// - Implemented private messaging and group chat features.
+// - Designed scalable event-driven backend architecture.
 
-EDUCATION
-Bachelor of Technology in Computer Science
-Rajiv Gandhi Technical University, 2021
-`
+// EDUCATION
+// Bachelor of Technology in Computer Science
+// Rajiv Gandhi Technical University, 2021
+// `
 
-const selfDescription = `
-I am a MERN stack developer with around 3 years of experience mainly focused
-on backend development using Node.js and MongoDB. I have worked on building
-REST APIs, implementing authentication using JWT, and optimizing database
-queries.
+// const selfDescription = `
+// I am a MERN stack developer with around 3 years of experience mainly focused
+// on backend development using Node.js and MongoDB. I have worked on building
+// REST APIs, implementing authentication using JWT, and optimizing database
+// queries.
 
-I enjoy working on system design problems and improving application
-performance. Recently, I have been exploring AI integrations using Gemini
-API and learning about scalable backend architecture. I have some basic
-knowledge of Redis and Docker but haven't used them extensively in
-production.
+// I enjoy working on system design problems and improving application
+// performance. Recently, I have been exploring AI integrations using Gemini
+// API and learning about scalable backend architecture. I have some basic
+// knowledge of Redis and Docker but haven't used them extensively in
+// production.
 
-I am currently targeting backend developer roles where I can work on
-scalable systems and improve my expertise in distributed performance
-optimization.
-`
+// I am currently targeting backend developer roles where I can work on
+// scalable systems and improve my expertise in distributed performance
+// optimization.
+// `
 
 
 
-const jobDescription = `
-Position: Backend Developer (Node.js)
+// const jobDescription = `
+// Position: Backend Developer (Node.js)
 
-Location: Remote / Bangalore
+// Location: Remote / Bangalore
 
-We are looking for a Backend Developer with strong experience in Node.js
-and database design to build scalable and high-performance APIs.
+// We are looking for a Backend Developer with strong experience in Node.js
+// and database design to build scalable and high-performance APIs.
 
-Responsibilities:
-- Design and develop scalable RESTful APIs using Node.js and Express.
-- Optimize database performance using indexing, query optimization,
-  and caching strategies.
-- Implement authentication and authorization mechanisms.
-- Work with Redis or similar caching solutions.
-- Write clean, maintainable, and testable code.
-- Collaborate with frontend and DevOps teams.
-- Participate in system design discussions.
+// Responsibilities:
+// - Design and develop scalable RESTful APIs using Node.js and Express.
+// - Optimize database performance using indexing, query optimization,
+//   and caching strategies.
+// - Implement authentication and authorization mechanisms.
+// - Work with Redis or similar caching solutions.
+// - Write clean, maintainable, and testable code.
+// - Collaborate with frontend and DevOps teams.
+// - Participate in system design discussions.
 
-Required Skills:
-- Strong proficiency in Node.js and Express
-- Experience with MongoDB or SQL databases
-- Knowledge of REST API design
-- Understanding of system design fundamentals
-- Familiarity with Redis, Docker, or similar tools
-`
+// Required Skills:
+// - Strong proficiency in Node.js and Express
+// - Experience with MongoDB or SQL databases
+// - Knowledge of REST API design
+// - Understanding of system design fundamentals
+// - Familiarity with Redis, Docker, or similar tools
+// `
 
-module.exports={
-  resume,selfDescription,jobDescription
-}
+// module.exports={
+//   resume,selfDescription,jobDescription
+// }

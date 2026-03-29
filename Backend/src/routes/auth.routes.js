@@ -1,39 +1,27 @@
-const {Router} = require('express')
-const authController=require("../controllers/auth.controller")
-const authMiddleware=require("../middlewares/auth.middleware")
+const { Router } = require('express')
+const authController = require("../controllers/auth.controller")
+const authMiddleware = require("../middlewares/auth.middleware")
 
-const authRouter=Router()
+const authRouter = Router()
 
+// REGISTER
+authRouter.post("/register", authController.registerUserController)
 
-/**
- * @route POST/api/auth/register
- * @description Register a new User
- * @access Public
- */
+// LOGIN
+authRouter.post("/login", authController.loginUserController)
 
-authRouter.post("/register",authController.registerUserController)
+// LOGOUT (fixed)
+authRouter.post(
+    "/logout",
+    authMiddleware.authUser,
+    authController.logoutUserController
+)
 
-/**
- * @route POST/api/auth/login
- * @description login user with email and password
- * @access public 
- */
-authRouter.post("/login",authController.loginUserController)
+// GET CURRENT USER (renamed)
+authRouter.get(
+    "/me",
+    authMiddleware.authUser,
+    authController.getMeController
+)
 
-
-/**
- * @route GET/api/auth/logout
- * @description clear token from user cookie and add the token in blacklist
- * @access public
- */
-
-authRouter.get("/logout",authController.logoutUserController)
-
-
-/**
- * @route GET/pi/auth/get-me
- * @description get the current loghged in user details
- * @acess private
- */
-authRouter.get("/get-me",authMiddleware.authUser,authController.getMeController)
-module.exports=authRouter
+module.exports = authRouter
