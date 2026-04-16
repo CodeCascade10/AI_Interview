@@ -42,14 +42,9 @@ app.use(express.json())
 app.use(cookieParser())
 
 app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://ai-interview-jade-phi.vercel.app",
-    "https://ai-interview-c9kv8wysu-kausik-naskars-projects.vercel.app"
-  ],
+  origin: true,
   credentials: true
 }));
-
 /**
 
 * =========================
