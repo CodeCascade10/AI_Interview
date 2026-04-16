@@ -1,16 +1,16 @@
-import axios from "axios"
+import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true
-})
+});
 
 export async function register({ username, email, password }) {
   try {
-    const response = await api.post("/api/auth/register", {
+    const response = await api.post("/auth/register", {
       username, email, password
-    })
-    return response.data
+    });
+    return response.data;
   } catch (err) {
     throw err.response?.data || err;
   }
@@ -18,10 +18,10 @@ export async function register({ username, email, password }) {
 
 export async function login({ email, password }) {
   try {
-    const response = await api.post("/api/auth/login", {
+    const response = await api.post("/auth/login", {
       email, password
-    })
-    return response.data 
+    });
+    return response.data;
   } catch (err) {
     throw err.response?.data || err;
   }
@@ -29,8 +29,8 @@ export async function login({ email, password }) {
 
 export async function logout() {
   try {
-    const response = await api.post("/api/auth/logout")
-    return response.data
+    const response = await api.post("/auth/logout");
+    return response.data;
   } catch (err) {
     throw err.response?.data || err;
   }
@@ -38,8 +38,8 @@ export async function logout() {
 
 export async function getMe() {
   try {
-    const response = await api.get("/api/auth/me")
-    return response.data
+    const response = await api.get("/auth/me");
+    return response.data;
   } catch (err) {
     throw err.response?.data || err;
   }
