@@ -111,9 +111,9 @@ async function generateInterViewReportController(req, res) {
 
         const { selfDescription, jobDescription } = req.body
 
-        if (!selfDescription || !jobDescription) {
+        if (!jobDescription) {
             return res.status(400).json({
-                message: "selfDescription and jobDescription are required"
+                message: "jobDescription is required"
             })
         }
 

@@ -1,25 +1,26 @@
-const GOOGLE_GENAI_API_KEY=AIzaSyDsPDDLePlHgTddoNTMUaklJy26hnKSh7I
-const axios = require("axios")
+const { GoogleGenAI } = require("@google/genai");
 
+// Initializing the new GenAI SDK with the API key from environment variables
+const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_GENAI_API_KEY });
 
 async function generateInterviewReport({ resume, selfDescription, jobDescription }) {
-try {
-const prompt = `
+    try {
+        const prompt = `
 You are an AI Interview Assistant.
 
 Resume:
 ${resume}
 
-Self Description:
-${selfDescription}
-
+${selfDescription ? `Self Description:\n${selfDescription}\n` : ''}
 Job Description:
 ${jobDescription}
 
-Return ONLY JSON:
+Return ONLY valid JSON with exactly this structure:
 
 {
   "matchScore": number,
+  "keyStrengths": ["string", "string"],
+  "resumeTips": ["string", "string"],
   "technicalQuestions": [
     { "question": "", "intention": "", "answer": "" }
   ],
@@ -34,31 +35,25 @@ Return ONLY JSON:
   ],
   "title": ""
 }
-`
-    const response = await axios.post(
-        `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${process.env.GEMINI_API_KEY}`,
-        {
-            contents: [
-                {
-                    parts: [{ text: prompt }]
-                }
-            ]
-        }
-    )
+`;
 
-    const text = response.data.candidates[0].content.parts[0].text
+        const response = await ai.models.generateContent({
+            model: "gemini-3-flash-preview",
+            contents: prompt,
+            config: {
+                responseMimeType: "application/json"
+            }
+        });
 
-    const cleaned = text.replace(/```json|```/g, "").trim()
+        const text = response.text;
+        const cleaned = text.replace(/```json|```/g, "").trim();
 
-    return JSON.parse(cleaned)
+        return JSON.parse(cleaned);
 
-} catch (err) {
-    console.error("AI ERROR:", err.response?.data || err.message)
-    throw err
-}
-````
-
+    } catch (err) {
+        console.error("AI ERROR:", err);
+        throw err;
+    }
 }
 
-module.exports = { generateInterviewReport }
-console.log("KEY:", process.env.GEMINI_API_KEY)
+module.exports = { generateInterviewReport };
