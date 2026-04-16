@@ -2,7 +2,7 @@ import { api } from "../features/auth/services/auth.api";
 
 export async function generateInterviewReport(formData) {
   try {
-    const response = await api.post("/api/interview", formData, {
+    const response = await api.post("/interview", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
