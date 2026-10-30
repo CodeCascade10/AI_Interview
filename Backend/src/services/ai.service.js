@@ -3,15 +3,19 @@ const { GoogleGenAI } = require("@google/genai");
 // Initializing the new GenAI SDK with the API key from environment variables
 const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_GENAI_API_KEY });
 
-async function generateInterviewReport({ resume, selfDescription, jobDescription }) {
-    try {
-        const prompt = `
+async function generateInterviewReport({
+  resume,
+  selfDescription,
+  jobDescription,
+}) {
+  try {
+    const prompt = `
 You are an AI Interview Assistant.
 
 Resume:
 ${resume}
 
-${selfDescription ? `Self Description:\n${selfDescription}\n` : ''}
+${selfDescription ? `Self Description:\n${selfDescription}\n` : ""}
 Job Description:
 ${jobDescription}
 
@@ -37,23 +41,22 @@ Return ONLY valid JSON with exactly this structure:
 }
 `;
 
-        const response = await ai.models.generateContent({
-            model: "gemini-3-flash-preview",
-            contents: prompt,
-            config: {
-                responseMimeType: "application/json"
-            }
-        });
+    const response = await ai.models.generateContent({
+      model: "gemini-3-flash-preview",
+      contents: prompt,
+      config: {
+        responseMimeType: "application/json",
+      },
+    });
 
-        const text = response.text;
-        const cleaned = text.replace(/```json|```/g, "").trim();
+    const text = response.text;
+    const cleaned = text.replace(/```json|```/g, "").trim();
 
-        return JSON.parse(cleaned);
-
-    } catch (err) {
-        console.error("AI ERROR:", err);
-        throw err;
-    }
+    return JSON.parse(cleaned);
+  } catch (err) {
+    console.error("AI ERROR:", err);
+    throw err;
+  }
 }
 
 module.exports = { generateInterviewReport };
