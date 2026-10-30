@@ -16,6 +16,7 @@ const Register = () => {
     try {
       // Use email as the username to satisfy the backend model
       const derivedUsername = email.split('@')[0] + Math.random().toString(36).substring(2, 6)
+      console.log("Derived Username:", derivedUsername)
       await handleRegister({ username: derivedUsername, email, password })
       navigate("/dashboard")
     } catch (err) {

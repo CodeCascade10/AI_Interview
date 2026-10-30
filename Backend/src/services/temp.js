@@ -46,8 +46,6 @@
 // optimization.
 // `
 
-
-
 // const jobDescription = `
 // Position: Backend Developer (Node.js)
 

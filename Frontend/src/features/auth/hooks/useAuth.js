@@ -3,59 +3,58 @@ import { AuthContext } from "../auth.context";
 import { login, register, logout } from "../services/auth.api";
 
 export const useAuth = () => {
-
-  const context = useContext(AuthContext)
+  const context = useContext(AuthContext);
   if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider")
+    throw new Error("useAuth must be used within an AuthProvider");
   }
-  const { user, setUser, loading, setLoading } = context
+  const { user, setUser, loading, setLoading } = context;
 
   const handleLogin = async ({ email, password }) => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const data = await login({ email, password })
-      setUser(data.user)
-      return data
+      const data = await login({ email, password });
+      setUser(data.user);
+      return data;
     } catch (err) {
-      console.error(err)
-      throw err
+      console.error(err);
+      throw err;
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleRegister = async ({ username, email, password }) => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const data = await register({ username, email, password })
-      setUser(data.user)
-      return data
+      const data = await register({ username, email, password });
+      setUser(data.user);
+      return data;
     } catch (err) {
-      console.error(err)
-      throw err
+      console.error(err);
+      throw err;
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleLogout = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
-      await logout()
-      setUser(null)
+      await logout();
+      setUser(null);
     } catch (err) {
-      console.error(err)
-      throw err
+      console.error(err);
+      throw err;
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return {
     user,
     loading,
     handleLogin,
     handleRegister,
-    handleLogout
-  }
-}
+    handleLogout,
+  };
+};

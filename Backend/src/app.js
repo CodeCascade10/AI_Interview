@@ -11,25 +11,21 @@
 //   credentials:true
 // }))
 
-
 // /* require all the routes here*/
 // const authRouter=require("./routes/auth.routes")
 // const interviewRouter=require("./routes/interview.routes")
-
-
 
 // /* using all the routes here */
 // app.use("/api/auth",authRouter)
 // app.use("/api/interview",interviewRouter)
 
-
 // module.exports=app
-const express = require("express")
-const cookieParser = require("cookie-parser")
-const cors = require("cors")
-const multer = require("multer")
+const express = require("express");
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
+const multer = require("multer");
 
-const app = express()
+const app = express();
 
 /**
 
@@ -38,13 +34,15 @@ const app = express()
 * =========================
   */
 
-app.use(express.json())
-app.use(cookieParser())
+app.use(express.json());
+app.use(cookieParser());
 
-app.use(cors({
-  origin: true,
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  }),
+);
 /**
 
 * =========================
@@ -52,11 +50,11 @@ app.use(cors({
 * =========================
   */
 
-const authRouter = require("./routes/auth.routes")
-const interviewRouter = require("./routes/interview.routes")
+const authRouter = require("./routes/auth.routes");
+const interviewRouter = require("./routes/interview.routes");
 
-app.use("/api/auth", authRouter)
-app.use("/api/interview", interviewRouter)
+app.use("/api/auth", authRouter);
+app.use("/api/interview", interviewRouter);
 
 /**
 
@@ -64,9 +62,9 @@ app.use("/api/interview", interviewRouter)
 * HEALTH CHECK (optional but useful)
 * =========================
   */
-  app.get("/", (req, res) => {
-  res.send("API is running 🚀")
-  })
+app.get("/", (req, res) => {
+  res.send("API is running 🚀");
+});
 
 /**
 
@@ -74,21 +72,21 @@ app.use("/api/interview", interviewRouter)
 * MULTER ERROR HANDLER
 * =========================
   */
-  app.use((err, req, res, next) => {
+app.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {
-  return res.status(400).json({
-  message: err.message
-  })
+    return res.status(400).json({
+      message: err.message,
+    });
   }
 
   if (err.message === "Only PDF files are allowed") {
-  return res.status(400).json({
-  message: err.message
-  })
+    return res.status(400).json({
+      message: err.message,
+    });
   }
 
-  next(err)
-  })
+  next(err);
+});
 
 /**
 
@@ -96,12 +94,12 @@ app.use("/api/interview", interviewRouter)
 * GLOBAL ERROR HANDLER
 * =========================
   */
-  app.use((err, req, res, next) => {
-  console.error("Server Error:", err.stack)
+app.use((err, req, res, next) => {
+  console.error("Server Error:", err.stack);
 
   res.status(500).json({
-  message: "Internal Server Error"
-  })
-  })
+    message: "Internal Server Error",
+  });
+});
 
-module.exports = app
+module.exports = app;
