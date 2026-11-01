@@ -17,101 +17,161 @@ function generateToken(user) {
 }
 
 // Helper: set cookie safely
-function setTokenCookie(res, token) {
-    res.cookie("token", token, {
+
+function getCookieOptions() {
+    const isProduction = process.env.NODE_ENV === "production";
+
+    return {
         httpOnly: true,
-        secure: true,        // must be true in production (HTTPS)
-        sameSite: "none"     // 🔥 THIS IS THE FIX
-    })
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
+        path: "/",
+        maxAge: 24 * 60 * 60 * 1000
+    };
 }
 
-/**
- * REGISTER
- */
+function setTokenCookie(res, token) {
+    res.cookie("token", token, getCookieOptions());
+}
+
+
+
+ //REGISTER
 async function registerUserController(req, res) {
     try {
-        const { username, email, password } = req.body
+        const { username, email, password } = req.body;
 
-        if (!username || !email || !password) {
+        // Validate required fields
+        const usernameValue = username?.trim();
+        const emailValue = email?.trim().toLowerCase();
+
+        if (!usernameValue || !emailValue || !password) {
             return res.status(400).json({
                 message: "Please provide username, email and password"
-            })
+            });
         }
 
+        // Validate username length
+        if (usernameValue.length < 3) {
+            return res.status(400).json({
+                message: "Username must be at least 3 characters"
+            });
+        }
+
+        // Validate password length
+        if (password.length < 8) {
+            return res.status(400).json({
+                message: "Password must be at least 8 characters"
+            });
+        }
+
+        // Validate email format
+        const isValidEmail = /^\S+@\S+\.\S+$/.test(emailValue);
+
+        if (!isValidEmail) {
+            return res.status(400).json({
+                message: "Please provide a valid email address"
+            });
+        }
+
+        // Check whether the account already exists
         const isUserAlreadyExists = await userModel.findOne({
-            $or: [{ username }, { email }]
-        })
+            $or: [
+                { username: usernameValue },
+                { email: emailValue }
+            ]
+        });
 
         if (isUserAlreadyExists) {
             return res.status(400).json({
                 message: "Account already exists"
-            })
+            });
         }
 
-        const hash = await bcrypt.hash(password, 10)
+        // Hash password
+        const hash = await bcrypt.hash(password, 10);
 
+        // Create user
         const user = await userModel.create({
-            username,
-            email,
+            username: usernameValue,
+            email: emailValue,
             password: hash
-        })
+        });
 
-        const token = generateToken(user)
-        setTokenCookie(res, token)
+        // Generate token and set cookie
+        const token = generateToken(user);
+        setTokenCookie(res, token);
 
-        res.status(201).json({
+        return res.status(201).json({
             message: "User registered successfully",
             user: {
                 id: user._id,
                 username: user.username,
                 email: user.email
             }
-        })
+        });
 
     } catch (error) {
-        console.error("Register Error:", error.message)
-        res.status(500).json({ message: "Internal server error" })
+        console.error("Register Error:", error.message);
+
+        return res.status(500).json({
+            message: "Internal server error"
+        });
     }
 }
 
-/**
- * LOGIN
- */
+// LOGIN
 async function loginUserController(req, res) {
     try {
-        const { email, password } = req.body
+        const { email, password } = req.body;
 
-        const user = await userModel.findOne({ email })
+        const emailValue = email?.trim().toLowerCase();
+
+        if (!emailValue || !password) {
+            return res.status(400).json({
+                message: "Please provide email and password"
+            });
+        }
+
+        const user = await userModel.findOne({
+            email: emailValue
+        });
 
         if (!user) {
             return res.status(400).json({
                 message: "Invalid email or password"
-            })
+            });
         }
 
-        const isPasswordValid = await bcrypt.compare(password, user.password)
+        const isPasswordValid = await bcrypt.compare(
+            password,
+            user.password
+        );
 
         if (!isPasswordValid) {
             return res.status(400).json({
                 message: "Invalid email or password"
-            })
+            });
         }
 
-        const token = generateToken(user)
-        setTokenCookie(res, token)
+        const token = generateToken(user);
+        setTokenCookie(res, token);
 
-        res.status(200).json({
+        return res.status(200).json({
             message: "User logged in successfully",
             user: {
                 id: user._id,
                 username: user.username,
                 email: user.email
             }
-        })
+        });
 
     } catch (error) {
-        console.error("Login Error:", error.message)
-        res.status(500).json({ message: "Internal server error" })
+        console.error("Login Error:", error.message);
+
+        return res.status(500).json({
+            message: "Internal server error"
+        });
     }
 }
 
@@ -120,7 +180,7 @@ async function loginUserController(req, res) {
  */
 async function logoutUserController(req, res) {
     try {
-        const token = req.cookies.token
+        const token = req.cookies?.token;
 
         if (token) {
             await tokenBlacklistModel.create({
@@ -129,7 +189,12 @@ async function logoutUserController(req, res) {
             })
         }
 
-        res.clearCookie("token")
+        res.clearCookie("token", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+            path: "/"
+        });
 
         res.status(200).json({
             message: "User logged out successfully"
